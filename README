@@ -1,0 +1,9 @@
+20120531
+ * Field Resizable
+ * Field ControlButton:  [Configure], [Add subfield + ], [Del sub-field - ]
+ * Configure Panel
+ * Finish Button(完成定位) -> console output json data of fields
+
+20120524
+ * group move/selection/drag
+ * arrow key move
