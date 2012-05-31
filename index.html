@@ -48,6 +48,18 @@
 			    border: 3px solid #68BADA;
 			    cursor:move;
 			}
+			#formArea div.showContent {
+			    position: absolute;
+			    height: 19px;
+			    border: 3px solid #FFFFFF;
+			    background-color: #FFFFFF;
+			    color: #000000;
+			    cursor:pointer;
+			    filter:alpha(opacity=100);
+                opacity: 1;
+                -moz-opacity: 1;		
+			}
+
 			.fv-opacity{
 		        filter:alpha(opacity=80);
                 opacity: .8;
@@ -288,8 +300,8 @@
 					   	coords.push(item);
 					}).resizable({
 					    handles: 'e',
-			            maxWidth: 500,
-			            minWidth: 100,
+			            maxWidth: 500,    // Todo: Lib parament: (500) 預設 最大欄位寬度
+			            minWidth: 100,    // Todo: Lib parament: (100) 預設 最小欄位寬度
 			            resize: function(event, ui) {
 			            	var fWidth = $(this).css('width');
 			       			$('div[id*="'+thisID+'_"]').each(function() {				            	
@@ -446,7 +458,7 @@
 							var nextSubItems = parseInt($('#' + thisID).data("nextSubItems"));
 							
 							if(!nextSubItems){
-								$('#' + thisID).data("topInterval", 30); //預設 subitem 之間的間距 
+								$('#' + thisID).data("topInterval", 30); // Todo: Lib parament: (30) 預設 subitem 之間的間距
 								return;
 							};
 							//alert(nextSubItems);
@@ -532,16 +544,40 @@
 					data['ffcur'] = '台幣';
 					data['fexrate'] = '1:33.37';
 					data['frcur'] = '美金';
+					data['facc'] = '002356473567';
 					data['ftotal'] = 23000;
 
 					//alert(data['fproduct'][1]);
-					var cc = '';
 					for(var key in data){
-    					cc += key+' : '+data[key]+'<br />';
+						var fitem = $('div.' + key);
+						fitem.empty().removeClass('fvField fvSubField').addClass('showContent').draggable('destroy').html(data[key][0]);
+					    var theAlign = fitem.data("ftalign");
+						if(theAlign == '置左'){
+							fitem.css('text-align','left');
+						}
+						else if(theAlign == '置中'){
+							fitem.css('text-align','center');
+						}
+						else if(theAlign == '置右'){
+							fitem.css('text-align','right');
+						}
 					}
 
-					$('div.fproduct').empty();
+					// var fproduct = $('div.fproduct');
+					// fproduct.empty().removeClass('fvField fvSubField').addClass('showContent').draggable('destroy').html(data['fproduct'][0]);
+					
+					// var theAlign = fproduct.data("ftalign");
 
+					// if(theAlign == '置左'){
+					// 	fproduct.css('text-align','left');
+					// }
+					// else if(theAlign == '置中'){
+					// 	fproduct.css('text-align','center');
+					// }
+					// else if(theAlign == '置右'){
+					// 	fproduct.css('text-align','right');
+					// }
+					//.data("ftalign", '置左')
 					//$('div.fvField').data('fkey'=="fsign").remove();
 
 					//alert(cc);
