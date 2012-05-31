@@ -172,6 +172,9 @@
 
                     var divObj = $("<div id='" + thisID + "' class='fvField fv-opacity'></div>");
 
+                    //   加入[key]
+	                divObj.addClass(fieldObj.fkey);
+
                     //   初始[fname]
                     $(divObj).append(fieldObj.fname);
 
@@ -284,7 +287,7 @@
 						var item={ coordTop:  coord.left, coordLeft: coord.top  };
 					   	coords.push(item);
 					}).resizable({
-					    handles: 'e, w',
+					    handles: 'e',
 			            maxWidth: 500,
 			            minWidth: 100,
 			            resize: function(event, ui) {
@@ -536,7 +539,12 @@
 					for(var key in data){
     					cc += key+' : '+data[key]+'<br />';
 					}
-					alert(cc);
+
+					$('div.fproduct').empty();
+
+					//$('div.fvField').data('fkey'=="fsign").remove();
+
+					//alert(cc);
 				});
 
 			    $("#formArea").selectable({
