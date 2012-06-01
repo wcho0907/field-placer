@@ -124,8 +124,8 @@
 		  <tr>
 		  	<td>
 			    <button id="initButton">初始定位</button>
-			    <button id="cleanButton">清除定位</button>
-			    <button id="finishButton">完成定位</button>
+			    <button id="cleanButton">載入定位</button>
+			    <button id="finishButton">輸出定位</button>
 			    <button id="previewButton">報表預覽</button>
 		  	</td>
 		    <td>
@@ -162,20 +162,9 @@
                 }
 
                 if(!fields){
-                	alert("Use Default Fields");
-                	fields = [         	
-						{id:"1", fname:"簽名"    , ftype:"單一", flocation:"", fwidth: "100", ftalign: "置左", fstatus:"未設定"},
-						{id:"2", fname:"科目"    , ftype:"多重", flocation:"", fwidth: "110", ftalign: "置中", fstatus:"未設定"},
-						{id:"3", fname:"摘要"    , ftype:"多重", flocation:"", fwidth: "120", ftalign: "置右", fstatus:"未設定"},
-						{id:"4", fname:"金額"    , ftype:"多重", flocation:"", fwidth: "130", ftalign: "置左", fstatus:"未設定"},
-						{id:"5", fname:"放款幣別", ftype:"單一", flocation:"", fwidth: "140", ftalign: "置中", fstatus:"未設定"},
-						{id:"6", fname:"匯率"    , ftype:"單一", flocation:"", fwidth: "150", ftalign: "置右", fstatus:"未設定"},
-						{id:"7", fname:"還款幣別", ftype:"單一", flocation:"", fwidth: "160", ftalign: "置左", fstatus:"未設定"},
-						{id:"8", fname:"扣款帳號", ftype:"單一", flocation:"", fwidth: "170", ftalign: "置中", fstatus:"未設定"},
-						{id:"9", fname:"總金額"  , ftype:"單一", flocation:"", fwidth: "180", ftalign: "置右", fstatus:"未設定"}
-			        ]; 
+
                 }
-				// 產生欄位(種類: 單一)
+				// 產生欄位
 				var createField = function(fieldObj){                   
                     // 1. 欄位定義初始化    
                     
@@ -193,6 +182,7 @@
                     //   初始[flocation: left,top,subitems,interval]
                     var fLeft = fieldObj.flocation.split(",")[0];
                     var fTop = fieldObj.flocation.split(",")[1];
+
                     if(!fTop){
                     	fTop = (parseInt(fieldObj.id) -1) * 35;  // Todo: Lib parament: (35) 預設 element 之間的間距
                     	fLeft = 0;
@@ -209,19 +199,14 @@
 						var fsubitems = fieldObj.flocation.split(",")[2];
 						var ftopinterval = fieldObj.flocation.split(",")[3];                        
 		                // Todo: Lib parament: (30) 預設 subitem 之間的間距 
-		                if(!fsubitems){
+		                if(!ftopinterval){
 		                	divObj.data("topInterval",30);
 		                }
 		                else{
-		                	divObj.data("topInterval",fsubitems);	
+		                	divObj.data("topInterval",ftopinterval);	
 		                }
 		                // Todo: Lib parament: (0) 預設 subitem 的個數
-		                if(!ftopinterval){
-		                	divObj.data("nextSubItems",0); 	
-		                }
-		                else{
-		                	divObj.data("nextSubItems",ftopinterval);
-		                }
+		                divObj.data("nextSubItems",0);
 					}
 
                     //   初始[ftalign] 
@@ -392,58 +377,13 @@
 						$(divObj).append(plusSpan);
 					    $(divObj).append(minusSpn);
                         //alert(fieldObj.ftype=='多重'); 
+                        //alert($(divObj).data('nextSubItems'));
+		                
+
 
 		                // 5. 多重欄位增加按鈕(+)
 		                $('#' + thisID + ' span.' + columnPlus).click(function (e){	
-		                	// Prevent button inside div to be triggered (Todo: refactory)
-							if($(this).closest('#' + thisID).data("isDragging")){
-								$(this).closest('#' + thisID).removeData("isDragging");
-								return
-							}
-							e.stopPropagation();
-							
-							var nextSubItems = parseInt($('#' + thisID).data("nextSubItems"));
-	                        
-							// if(!nextSubItems){
-							// 	nextSubItems = 1;
-							// 	//alert(nextSubItems);
-							// }
-							// else{
-							nextSubItems++;	
-							//}	                        
-                       
-	                        var divLeft = parseInt($(this).closest('.fvField').css('left'));
-	                        var divTop = parseInt($(this).closest('.fvField').css('top'));	                        
-	                        var topInterval = parseInt($(this).closest('.fvField').data("topInterval"));
-
-	 						var divObj = $("<div id='" + thisID + '_' + nextSubItems + "' style='left:" + divLeft + "px;top:" + (divTop+nextSubItems*topInterval) + "px;' class='fvSubField'></div>");
-
-                            divObj.css('width', $(this).closest('.fvField').css('width'));
-
-							$('#formArea').append(divObj);
-							$(this).closest('.fvField').data("nextSubItems", nextSubItems);
-
-	 						if(nextSubItems==1){
-	 							divObj.draggable({
-	 							    axis: "y",
-	 							    drag: function(ev, ui) {
-	 							    	ev.stopPropagation();
-	                                    var subTop = parseInt($('#'+thisID+'_1').css('top').replace("px", ""));
-	                                    var topInterval = subTop - divTop;
-	                                    $(this).closest('.fvField').data("topInterval", topInterval);
-	                                    //alert(invTop);
-	 							    	$('div[id*="'+thisID+'_"]').not(this).each(function() {
-					                		var el = $(this);
-					                		var theID = parseInt(el.attr('id').split("_")[1]);
-					                		//alert(theID);
-					                		el.css({top: divTop + theID * topInterval});				                
-					            		});	
-	 							    },
-	 								stop: function(ev, ui){	
-			                            ev.stopPropagation();
-				        			}
-	 							});
-	 						}	                        
+                            createSubItem(e, fieldObj);
 							//alert('plus');						
 		                });
 		                // 6. 多重欄位減少按鈕(-)
@@ -467,15 +407,97 @@
 
 							//alert('minus');						
 		                });
+
+		                var nextSubItems = parseInt(fieldObj.flocation.split(",")[2]);
+		                //alert(nextSubItems);
+		                for(var i=0; i < nextSubItems; i++){
+		                	$('#' + thisID + ' span.' + columnPlus).trigger('click');
+		                }
 	            	}
+				};
+
+				// 產生子欄位 // isAddSubItems
+				var createSubItem = function(e, fieldObj){
+					var thisID = 'id' + fieldObj.id;
+					var fieldDiv = $('#' + thisID);
+
+                	// Prevent button inside div to be triggered (Todo: refactory)
+					if(fieldDiv.data("isDragging")){
+						fieldDiv.removeData("isDragging");
+						return
+					}
+					e.stopPropagation();
+					
+					var nextSubItems = parseInt(fieldDiv.data("nextSubItems"));
+                    
+					// if(!nextSubItems){
+					// 	nextSubItems = 1;
+					// 	//alert(nextSubItems);
+					// }
+					// else{
+					nextSubItems++;	
+					//}	                        
+               
+                    var divLeft = parseInt(fieldDiv.css('left'));
+                    var divTop = parseInt(fieldDiv.css('top'));	                        
+                    var topInterval = parseInt(fieldDiv.data("topInterval"));
+
+					var divObj = $("<div id='" + thisID + '_' + nextSubItems + "' style='left:" + divLeft + "px;top:" + (divTop+nextSubItems*topInterval) + "px;' class='fvSubField'></div>");
+
+                    divObj.css('width', fieldDiv.css('width'));
+
+					$('#formArea').append(divObj);
+					fieldDiv.data("nextSubItems", nextSubItems);
+
+						if(nextSubItems==1){
+							divObj.draggable({
+							    axis: "y",
+							    drag: function(ev, ui) {
+							    	ev.stopPropagation();
+	                                var subTop = parseInt($('#'+thisID+'_1').css('top').replace("px", ""));
+	                                var topInterval = subTop - divTop;
+	                                fieldDiv.data("topInterval", topInterval);
+                                	//alert(invTop);
+							    	$('div[id*="'+thisID+'_"]').not(this).each(function() {
+			                			var el = $(this);
+			                			var theID = parseInt(el.attr('id').split("_")[1]);
+			                			//alert(theID);
+			                			el.css({top: divTop + theID * topInterval});				                
+			            			});	
+							    },
+								stop: function(ev, ui){	
+	                            	ev.stopPropagation();
+		        				}
+							});
+						}						
 				};
 
                 $("button").button();
 
 				// 處理[初始定位]
 				var initLocation = function(fields){
+			        $("#formArea div").remove();
+
+                	//alert("Use Default Fields");
+                	fields = [         	
+						{id:"1", fname:"簽名"    , ftype:"單一", flocation:"", fwidth: "100", ftalign: "置左", fstatus:"未設定"},
+						{id:"2", fname:"科目"    , ftype:"多重", flocation:"", fwidth: "110", ftalign: "置中", fstatus:"未設定"},
+						{id:"3", fname:"摘要"    , ftype:"多重", flocation:"", fwidth: "120", ftalign: "置右", fstatus:"未設定"},
+						{id:"4", fname:"金額"    , ftype:"多重", flocation:"", fwidth: "130", ftalign: "置左", fstatus:"未設定"},
+						{id:"5", fname:"放款幣別", ftype:"單一", flocation:"", fwidth: "140", ftalign: "置中", fstatus:"未設定"},
+						{id:"6", fname:"匯率"    , ftype:"單一", flocation:"", fwidth: "150", ftalign: "置右", fstatus:"未設定"},
+						{id:"7", fname:"還款幣別", ftype:"單一", flocation:"", fwidth: "160", ftalign: "置左", fstatus:"未設定"},
+						{id:"8", fname:"扣款帳號", ftype:"單一", flocation:"", fwidth: "170", ftalign: "置中", fstatus:"未設定"},
+						{id:"9", fname:"總金額"  , ftype:"單一", flocation:"", fwidth: "180", ftalign: "置右", fstatus:"未設定"}
+			        ]; 
+
 			        for(var i = 0; i < fields.length; i++){
 			            createField(fields[i]);	
+			        }
+
+			        $("#list").jqGrid("clearGridData", true);
+			        for(var i=0;i<=fields.length;i++){
+			        	$('#list').jqGrid('addRowData',i+1,fields[i]);
 			        }
 					//alert('initLocation');
 				};
@@ -485,10 +507,23 @@
                 	}
                 );
                 
-                // 處理[清除定位]
+                // 處理[載入定位]
                 $("#cleanButton").click(
                 	function(){
-                        $("#formArea div").remove();
+				        $("#formArea div").remove();
+
+                        $.getJSON("fd.json", function(json) {
+                        	fields = json;
+    						console.log(fields); // this will show the info it in firebug console
+    						for(var i = 0; i < fields.length; i++){
+				            	createField(fields[i]);	
+				        	}
+						});
+
+				        $("#list").jqGrid("clearGridData", true);
+				        for(var i=0;i<=fields.length;i++){
+				        	$('#list').jqGrid('addRowData',i+1,fields[i]);
+				        }
                 	}
                 );
 
@@ -522,6 +557,7 @@
 	                }
                     
 					console.log(JSON.stringify(fields));
+					alert("Output to the console.")
                 });
 
 				// 處理[報表預覽]	
@@ -640,11 +676,6 @@
 					gridview: true,
 					caption: '欄位定位'
 		        }); 
-
-		        for(var i=0;i<=fields.length;i++){
-		        	$('#list').jqGrid('addRowData',i+1,fields[i]);
-		        }
-
 			});
 		</script>
 	</body>
