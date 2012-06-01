@@ -164,15 +164,15 @@
                 if(!fields){
                 	alert("Use Default Fields");
                 	fields = [         	
-						{id:"1", fkey:"fsign", fname:"簽名"    , ftype:"單一", flocation:"", fwidth: "100", ftalign: "置左", fstatus:"未設定"},
-						{id:"2", fkey:"fproduct", fname:"科目"    , ftype:"多重", flocation:"", fwidth: "110", ftalign: "置中", fstatus:"未設定"},
-						{id:"3", fkey:"fsummary", fname:"摘要"    , ftype:"多重", flocation:"", fwidth: "120", ftalign: "置右", fstatus:"未設定"},
-						{id:"4", fkey:"fcost", fname:"金額"    , ftype:"多重", flocation:"", fwidth: "130", ftalign: "置左", fstatus:"未設定"},
-						{id:"5", fkey:"ffcur", fname:"放款幣別", ftype:"單一", flocation:"", fwidth: "140", ftalign: "置中", fstatus:"未設定"},
-						{id:"6", fkey:"fexrate", fname:"匯率"    , ftype:"單一", flocation:"", fwidth: "150", ftalign: "置右", fstatus:"未設定"},
-						{id:"7", fkey:"frcur", fname:"還款幣別", ftype:"單一", flocation:"", fwidth: "160", ftalign: "置左", fstatus:"未設定"},
-						{id:"8", fkey:"facc", fname:"扣款帳號", ftype:"單一", flocation:"", fwidth: "170", ftalign: "置中", fstatus:"未設定"},
-						{id:"9", fkey:"ftotal", fname:"總金額"  , ftype:"單一", flocation:"", fwidth: "180", ftalign: "置右", fstatus:"未設定"}
+						{id:"1", fname:"簽名"    , ftype:"單一", flocation:"", fwidth: "100", ftalign: "置左", fstatus:"未設定"},
+						{id:"2", fname:"科目"    , ftype:"多重", flocation:"", fwidth: "110", ftalign: "置中", fstatus:"未設定"},
+						{id:"3", fname:"摘要"    , ftype:"多重", flocation:"", fwidth: "120", ftalign: "置右", fstatus:"未設定"},
+						{id:"4", fname:"金額"    , ftype:"多重", flocation:"", fwidth: "130", ftalign: "置左", fstatus:"未設定"},
+						{id:"5", fname:"放款幣別", ftype:"單一", flocation:"", fwidth: "140", ftalign: "置中", fstatus:"未設定"},
+						{id:"6", fname:"匯率"    , ftype:"單一", flocation:"", fwidth: "150", ftalign: "置右", fstatus:"未設定"},
+						{id:"7", fname:"還款幣別", ftype:"單一", flocation:"", fwidth: "160", ftalign: "置左", fstatus:"未設定"},
+						{id:"8", fname:"扣款帳號", ftype:"單一", flocation:"", fwidth: "170", ftalign: "置中", fstatus:"未設定"},
+						{id:"9", fname:"總金額"  , ftype:"單一", flocation:"", fwidth: "180", ftalign: "置右", fstatus:"未設定"}
 			        ]; 
                 }
 				// 產生欄位(種類: 單一)
@@ -526,61 +526,52 @@
 
 				// 處理[報表預覽]	
 				$("#previewButton").click(function(){					
-					//fkey:"fsign"
-					//fkey:"fproduct"
-					//fkey:"fsummary"
-					//fkey:"fcost"
-					//fkey:"ffcur"
-					//fkey:"fexrate"
-					//fkey:"frcur"
-					//fkey:"facc"
-					//fkey:"ftotal"
-
 					var data = {}; // New object
-					data['fsign'] = '簡經理';
-					data['fproduct'] = ['100學年度 學費', '100學年度 住宿費'];
-					data['fsummary'] = ['代墊', '誠齋(男生宿舍)'];
-					data['fcost'] = [15000, 8000];
-					data['ffcur'] = '台幣';
-					data['fexrate'] = '1:33.37';
-					data['frcur'] = '美金';
-					data['facc'] = '002356473567';
-					data['ftotal'] = 23000;
+					data['f_1'] = '簡經理';
+					data['f_2'] = ['100學年度 學費', '100學年度 住宿費'];
+					data['f_3'] = ['代墊', '誠齋(男生宿舍)'];
+					data['f_4'] = [15000, 8000];
+					data['f_5'] = '台幣';
+					data['f_6'] = '1:33.37';
+					data['f_7'] = '美金';
+					data['f_8'] = '002356473567';
+					data['f_9'] = 23000;
 
-					//alert(data['fproduct'][1]);
 					for(var key in data){
-						var fitem = $('div.' + key);
-						fitem.empty().removeClass('fvField fvSubField').addClass('showContent').draggable('destroy').html(data[key][0]);
-					    var theAlign = fitem.data("ftalign");
+						var fitem = $('#id' + key.split('_')[1]);
+						var theAlign = fitem.data("ftalign");
 						if(theAlign == '置左'){
-							fitem.css('text-align','left');
+							theAlign = 'left';
 						}
 						else if(theAlign == '置中'){
-							fitem.css('text-align','center');
+							theAlign = 'center';
 						}
 						else if(theAlign == '置右'){
-							fitem.css('text-align','right');
+							theAlign = 'right';
+						}
+						fitem.empty().removeClass('fvField').addClass('showContent').draggable('destroy');
+						if(data[key].constructor.toString().indexOf('Array') == -1){
+							// 單一	, 可再用欄位定義檢查一次							
+							fitem.html(data[key]);
+							fitem.css('text-align',theAlign);
+						}
+						else{
+							// 多重
+							var dataCount = data[key].length;
+							for(var i =0; i < dataCount; i++){
+								if(i==0){
+									fitem.html(data[key][i]);
+									fitem.css('text-align',theAlign);
+								}
+								else{
+									var fsubItem = $('#id' + key.split('_')[1] + '_' + i);
+									fsubItem.empty().removeClass('fvSubField').addClass('showContent').draggable('destroy');
+									fsubItem.html(data[key][i]);
+									fsubItem.css('text-align',theAlign);
+								}
+							}							
 						}
 					}
-
-					// var fproduct = $('div.fproduct');
-					// fproduct.empty().removeClass('fvField fvSubField').addClass('showContent').draggable('destroy').html(data['fproduct'][0]);
-					
-					// var theAlign = fproduct.data("ftalign");
-
-					// if(theAlign == '置左'){
-					// 	fproduct.css('text-align','left');
-					// }
-					// else if(theAlign == '置中'){
-					// 	fproduct.css('text-align','center');
-					// }
-					// else if(theAlign == '置右'){
-					// 	fproduct.css('text-align','right');
-					// }
-					//.data("ftalign", '置左')
-					//$('div.fvField').data('fkey'=="fsign").remove();
-
-					//alert(cc);
 				});
 
 			    $("#formArea").selectable({
