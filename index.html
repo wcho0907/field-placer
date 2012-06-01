@@ -124,8 +124,8 @@
 		  <tr>
 		  	<td>
 			    <button id="initButton">初始定位</button>
-			    <button id="cleanButton">載入定位</button>
-			    <button id="finishButton">輸出定位</button>
+			    <button id="loadButton">載入定位</button>
+			    <button id="outputButton">輸出定位</button>
 			    <button id="previewButton">報表預覽</button>
 		  	</td>
 		    <td>
@@ -499,6 +499,7 @@
 			        for(var i=0;i<=fields.length;i++){
 			        	$('#list').jqGrid('addRowData',i+1,fields[i]);
 			        }
+			        $('#list').trigger("reloadGrid");
 					//alert('initLocation');
 				};
                 $("#initButton").click(
@@ -508,7 +509,7 @@
                 );
                 
                 // 處理[載入定位]
-                $("#cleanButton").click(
+                $("#loadButton").click(
                 	function(){
 				        $("#formArea div").remove();
 
@@ -518,17 +519,20 @@
     						for(var i = 0; i < fields.length; i++){
 				            	createField(fields[i]);	
 				        	}
+
+
+					        $("#list").jqGrid("clearGridData", true);
+					        for(var i=0;i<=fields.length;i++){
+					        	$('#list').jqGrid('addRowData',i+1,fields[i]);
+					        }
+					        $('#list').trigger("reloadGrid");
 						});
 
-				        $("#list").jqGrid("clearGridData", true);
-				        for(var i=0;i<=fields.length;i++){
-				        	$('#list').jqGrid('addRowData',i+1,fields[i]);
-				        }
                 	}
                 );
 
 				// 處理[完成定位]				    
-                $("#finishButton").click(function(){
+                $("#outputButton").click(function(){
 					$("#list").jqGrid("clearGridData", true);
 					for(var i=0;i<fields.length;i++){
 	                    var theLeft = parseInt($('#id'+ (i+1)).css('left'));
