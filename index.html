@@ -230,21 +230,26 @@
                 $('#formImage').css('margin-left', marginLeft).css('margin-top', marginTop);
 				$('#formArea').css('margin-left', marginLeft).css('margin-top', marginTop);
 
-                $('#fvpmLeft').val(marginLeft).change(function() {
-                    var ml = parseInt($(this).val());
-                	if(ml >= 0) {
-                		marginLeft = ml;
-						$('#formImage').css('margin-left', marginLeft);
-						$('#formArea').css('margin-left', marginLeft);
-                	}
+                $('#fvpmLeft').val(marginLeft).keydown(function(e) {
+                    if(e.keyCode==13){
+	                    var ml = parseInt($(this).val());
+	                	if(ml >= 0) {
+	                		marginLeft = ml;
+							$('#formImage').css('margin-left', marginLeft);
+							$('#formArea').css('margin-left', marginLeft);
+	                	}
+	                }
                 });
-                $('#fvpmTop').val(marginTop).change(function() {
-                	var mt = parseInt($(this).val());
-                	if(mt >= 0) {
-                		marginTop = mt;
-						$('#formImage').css('margin-top', marginTop);
-						$('#formArea').css('margin-top', marginTop);
-                	}
+
+                $('#fvpmTop').val(marginTop).keydown(function(e) {
+                	if(e.keyCode==13){
+	                	var mt = parseInt($(this).val());
+	                	if(mt >= 0) {
+	                		marginTop = mt;
+							$('#formImage').css('margin-top', marginTop);
+							$('#formArea').css('margin-top', marginTop);
+	                	}
+	                }
                 });
 
 				// 設定頁面大小
