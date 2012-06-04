@@ -231,6 +231,7 @@
 				$('#formArea').css('margin-left', marginLeft).css('margin-top', marginTop);
 
                 $('#fvpmLeft').val(marginLeft).keydown(function(e) {
+                	// todo: 改回 change()
                     if(e.keyCode==13){
 	                    var ml = parseInt($(this).val());
 	                	if(ml >= 0) {
@@ -264,7 +265,7 @@
 
 				$("#pageSize label").click(function(e) {
 				    var newSize = $(this).children('span').html();
-				    newOrientation = pageOrientation;
+				    var newOrientation = pageOrientation;
 		    		updatePageSetting(newSize, newOrientation);
 				});
 				$("#pageOrientation label").click(function(e) {
