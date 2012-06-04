@@ -21,30 +21,18 @@
             }
 
             /* todo: page orientation */
-		    .pageSize-A3 {
-		    	width: 297mm; 
-		    	height: 420mm;
-		    }
-		    .pageSize-A4 {
-		    	width: 210mm; 
-		    	height: 297mm;
-		    }
-		    .pageSize-A5 {
-		    	width: 148mm; 
-		    	height: 210mm;
-		    }
-		    .pageSize-B3 {
-		    	width: 353mm; 
-		    	height: 500mm;
-		    }
-		    .pageSize-B4 {
-		    	width: 250mm; 
-		    	height: 353mm;
-		    }
-		    .pageSize-B5 {
-		    	width: 176mm; 
-		    	height: 250mm;
-		    }
+		    .pageSize-P-A3 {width: 297mm;height: 420mm;}
+		    .pageSize-P-A4 {width: 210mm;height: 297mm;}
+		    .pageSize-P-A5 {width: 148mm;height: 210mm;}
+		    .pageSize-P-B3 {width: 353mm;height: 500mm;}
+		    .pageSize-P-B4 {width: 250mm;height: 353mm;}
+		    .pageSize-P-B5 {width: 176mm;height: 250mm;}
+		    .pageSize-L-A3 {width: 420mm;height: 297mm;}
+		    .pageSize-L-A4 {width: 297mm;height: 210mm;}
+		    .pageSize-L-A5 {width: 210mm;height: 148mm;}
+		    .pageSize-L-B3 {width: 500mm;height: 353mm;}
+		    .pageSize-L-B4 {width: 353mm;height: 250mm;}
+		    .pageSize-L-B5 {width: 250mm;height: 176mm;}
 
 		    .ui-jqgrid {font-size:1em}
 
@@ -197,8 +185,8 @@
 						<td>頁面方向</td>
 						<td>
 							<div id="pageOrientation">
-								<input type="radio" id="poPortrait" name="pageOrientation" /><label for="poPortrait">直式</label>
-								<input type="radio" id="poLandscape" name="pageOrientation" checked="checked" /><label for="poLandscape">橫式</label>
+								<input type="radio" id="poPortrait" name="pageOrientation" checked="checked" /><label for="poPortrait">直式</label>
+								<input type="radio" id="poLandscape" name="pageOrientation"/><label for="poLandscape">橫式</label>
 							</div>								
 						</td>
 					</tr>
@@ -236,8 +224,8 @@
                 }
 
                 // 設定頁面邊距
-                var marginLeft = 30; // Todo: UI parament: (30) 預設頁面邊距左距
-                var marginTop = 20;  // Todo: UI parament: (30) 預設頁面邊距頂距
+                var marginLeft = 5; // Todo: Lib parament: (5) 預設頁面邊距左距
+                var marginTop = 10;  // Todo: Lib parament: (10) 預設頁面邊距頂距
 
                 $('#formImage').css('margin-left', marginLeft).css('margin-top', marginTop);
 				$('#formArea').css('margin-left', marginLeft).css('margin-top', marginTop);
@@ -258,25 +246,40 @@
 						$('#formArea').css('margin-top', marginTop);
                 	}
                 });
-                //fvpmLeft
-
-                //$('input[name=myInput]').change(function() { ... });
 
 				// 設定頁面大小
                 var pageSize = "A4"; // Todo: Lib parament: (A4) 預設頁面大小 [A3|A4|A5|B3|B4|B5]				
 				$("#pageSize").buttonset().find('label').width(50); // Todo: UI parament: (50) 預設頁面大小按鈕大小
 
-				$('#pageFrame').addClass('pageSize-' + pageSize);
-
-				$("#pageSize label").click(function(e) {
-				    var newSize = $(this).children('span').html();
-					$('#pageFrame').removeClass('pageSize-' + pageSize).addClass('pageSize-' + newSize);
-					pageSize = newSize;			    
-				});
-
 				// 設定頁面方向
 				var pageOrientation = "P"; // Todo: Lib parament: (P) 預設頁面方向 [P(ortrait)|L(andscape)]
 				$("#pageOrientation").buttonset().find('label').width(100); // Todo: UI parament: (100) 預設頁面方向按鈕大小
+
+				$('#pageFrame').addClass('pageSize-' + pageOrientation + '-' + pageSize);
+
+				$("#pageSize label").click(function(e) {
+				    var newSize = $(this).children('span').html();
+				    newOrientation = pageOrientation;
+		    		updatePageSetting(newSize, newOrientation);
+				});
+				$("#pageOrientation label").click(function(e) {
+					var newSize = pageSize;
+					var newOrientation = $(this).children('span').html();
+					updatePageSetting(newSize, newOrientation);
+				});	
+
+				var updatePageSetting = function(theSize, theOrientation){
+					if(theOrientation=='直式' || theOrientation=='P'){
+						theOrientation = "P";
+					}
+					else{
+						theOrientation = "L";
+					}
+
+					$('#pageFrame').removeClass('pageSize-' + pageOrientation + '-' + pageSize).addClass('pageSize-' + theOrientation + '-' + theSize);
+					pageOrientation = theOrientation;
+					pageSize = theSize;
+				};
 
 				// 產生欄位
 				var createField = function(fieldObj){                   
