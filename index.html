@@ -8,6 +8,43 @@
 <!-- 		<link rel="stylesheet" type="text/css" media="screen" href="css/cupertino/jquery-ui-1.8.20.custom.css" /> -->
         <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
 		<style type="text/css">
+
+			td {
+				vertical-align:top;
+			}
+
+            #pageFrame {
+				border: 1px dashed #000;
+				vertical-align:top;
+				background:#D3D3D3;
+            }
+
+            /* todo: page orientation */
+		    .pageSize-A3 {
+		    	width: 297mm; 
+		    	height: 420mm;
+		    }
+		    .pageSize-A4 {
+		    	width: 210mm; 
+		    	height: 297mm;
+		    }
+		    .pageSize-A5 {
+		    	width: 148mm; 
+		    	height: 210mm;
+		    }
+		    .pageSize-B3 {
+		    	width: 353mm; 
+		    	height: 500mm;
+		    }
+		    .pageSize-B4 {
+		    	width: 250mm; 
+		    	height: 353mm;
+		    }
+		    .pageSize-B5 {
+		    	width: 176mm; 
+		    	height: 250mm;
+		    }
+
 		    .ui-jqgrid {font-size:1em}
 
             /* 表格標題列高 */
@@ -24,10 +61,10 @@
 			#formArea {  
 			    background:#333;  
 			    border: 1px solid #000;  
-			    height:554px;  
-			    margin:30px auto auto auto;  
-			    position:relative;  
+			    height:554px;
 			    width:785px;
+			    margin:0 0 0 0;  
+			    position:relative;  
 			    background-image: url('images/LLDLN085.gif');
                 background-repeat: no-repeat;
 			}  
@@ -120,25 +157,55 @@
 		<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>		
 	</head>
 	<body>
-		<table>
+		<!-- 以下table結構為 main layout-->
+		<table id="mainLayout">
 		  <tr>
-		  	<td>
+		  	<td width="300px">
 			    <button id="initButton">初始定位</button>
 			    <button id="loadButton">載入定位</button>
-			    <button id="outputButton">輸出定位</button>
+			    <button id="OutputButton">輸出定位</button>
 			    <button id="previewButton">報表預覽</button>
-		  	</td>
-		    <td>
-		     	<div class="" id="status"></div>
-		  	</td>
-		  </tr>	
-		  <tr>
-			<td>
 			    <table id="list"><tbody></tbody></table>
+
+				<table id="pageSetting">
+					<tr>
+						<td>頁面邊距</td>	
+						<td>
+							距左: <input id="fvpmLeft" type="text" size="3" maxlength="3">
+							距頂: <input id="fvpmTop" type="text" size="3" maxlength="3">
+						</td>
+					</tr>
+					<tr>
+						<td>頁面大小</td>
+						<td>
+							<div id="pageSize">
+								<input type="radio" id="psA3" name="pageSize" /><label for="psA3">A3</label>
+								<input type="radio" id="psA4" name="pageSize" checked="checked" /><label for="psA4">A4</label>
+								<input type="radio" id="psA5" name="pageSize" /><label for="psA5">A5</label>
+								<input type="radio" id="psB3" name="pageSize" /><label for="psB3">B3</label>
+								<input type="radio" id="psB4" name="pageSize" /><label for="psB4">B4</label>
+								<input type="radio" id="psB5" name="pageSize" /><label for="psB5">B5</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>頁面方向</td>
+						<td>
+							<div id="pageOrientation">
+								<input type="radio" id="poPortrait" name="pageOrientation" /><label for="poPortrait">直式</label>
+								<input type="radio" id="poLandscape" name="pageOrientation" checked="checked" /><label for="poLandscape">橫式</label>
+							</div>								
+						</td>
+					</tr>
+				</table>
+				<div class="" id="status"></div>			
 			</td>
 			<td>
-                <div class="form-image"></div>
-        		<div id="formArea"></div>
+				
+				<div id="pageFrame">
+	                <div class="form-image"></div>
+	        		<div id="formArea"></div>
+        		</div>
 			</td>
 		  </tr>
 		</table> 
@@ -164,6 +231,47 @@
                 if(!fields){
 
                 }
+
+                // 設定頁面邊距
+                var marginLeft = 30; // Todo: UI parament: (30) 預設頁面邊距左距
+                var marginTop = 20;  // Todo: UI parament: (30) 預設頁面邊距頂距
+
+                $('#pageFrame').css('padding-left', marginLeft).css('padding-top', marginTop);
+
+                $('#fvpmLeft').val(marginLeft).change(function() {
+                    var ml = parseInt($(this).val());
+                	if(ml >= 0) {
+                		marginLeft = ml;
+						$('#pageFrame').css('padding-left', marginLeft);
+                	}
+                });
+                $('#fvpmTop').val(marginTop).change(function() {
+                	var mt = parseInt($(this).val());
+                	if(mt >= 0) {
+                		marginTop = mt;
+						$('#pageFrame').css('padding-top', marginTop);
+                	}
+                });
+                //fvpmLeft
+
+                //$('input[name=myInput]').change(function() { ... });
+
+				// 設定頁面大小
+                var pageSize = "A4"; // Todo: Lib parament: (A4) 預設頁面大小 [A3|A4|A5|B3|B4|B5]				
+				$("#pageSize").buttonset().find('label').width(50); // Todo: UI parament: (50) 預設頁面大小按鈕大小
+
+				$('#pageFrame').addClass('pageSize-' + pageSize);
+
+				$("#pageSize label").click(function(e) {
+				    var newSize = $(this).children('span').html();
+					$('#pageFrame').removeClass('pageSize-' + pageSize).addClass('pageSize-' + newSize);
+					pageSize = newSize;			    
+				});
+
+				// 設定頁面方向
+				var pageOrientation = "P"; // Todo: Lib parament: (P) 預設頁面方向 [P(ortrait)|L(andscape)]
+				$("#pageOrientation").buttonset().find('label').width(100); // Todo: UI parament: (100) 預設頁面方向按鈕大小
+
 				// 產生欄位
 				var createField = function(fieldObj){                   
                     // 1. 欄位定義初始化    
@@ -532,7 +640,7 @@
                 );
 
 				// 處理[完成定位]				    
-                $("#outputButton").click(function(){
+                $("#OutputButton").click(function(){
 					$("#list").jqGrid("clearGridData", true);
 					for(var i=0;i<fields.length;i++){
 	                    var theLeft = parseInt($('#id'+ (i+1)).css('left'));
@@ -673,7 +781,7 @@
 						});		
 						$('#id' + id).click();
 					},
-					height: 500,
+					height: 360,
 					sortname: 'invid',
 					sortorder: 'desc',
 					viewrecords: true,
