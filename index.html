@@ -14,6 +14,7 @@
 			}
 
             #pageFrame {
+            	position:absolute;
 				border: 1px dashed #000;
 				vertical-align:top;
 				background:#D3D3D3;
@@ -57,6 +58,10 @@
 			    vertical-align:text-top;
 			    white-space:normal !important;
 			}
+
+            #formImage {
+
+            }
 
 			#formArea {  
 			    background:#333;  
@@ -200,12 +205,10 @@
 				</table>
 				<div class="" id="status"></div>			
 			</td>
-			<td>
-				
-				<div id="pageFrame">
-	                <div class="form-image"></div>
-	        		<div id="formArea"></div>
-        		</div>
+			<td>				
+				<div id="pageFrame"></div>
+	            <div class="formImage"></div>    
+	        	<div id="formArea"></div>        		
 			</td>
 		  </tr>
 		</table> 
@@ -236,20 +239,23 @@
                 var marginLeft = 30; // Todo: UI parament: (30) 預設頁面邊距左距
                 var marginTop = 20;  // Todo: UI parament: (30) 預設頁面邊距頂距
 
-                $('#pageFrame').css('padding-left', marginLeft).css('padding-top', marginTop);
+                $('#formImage').css('margin-left', marginLeft).css('margin-top', marginTop);
+				$('#formArea').css('margin-left', marginLeft).css('margin-top', marginTop);
 
                 $('#fvpmLeft').val(marginLeft).change(function() {
                     var ml = parseInt($(this).val());
                 	if(ml >= 0) {
                 		marginLeft = ml;
-						$('#pageFrame').css('padding-left', marginLeft);
+						$('#formImage').css('margin-left', marginLeft);
+						$('#formArea').css('margin-left', marginLeft);
                 	}
                 });
                 $('#fvpmTop').val(marginTop).change(function() {
                 	var mt = parseInt($(this).val());
                 	if(mt >= 0) {
                 		marginTop = mt;
-						$('#pageFrame').css('padding-top', marginTop);
+						$('#formImage').css('margin-top', marginTop);
+						$('#formArea').css('margin-top', marginTop);
                 	}
                 });
                 //fvpmLeft
