@@ -1,9 +1,16 @@
+20120604
+ * Add pageSettings:
+   * Margin: the offset of image against page
+   * Size: A3|A4|A5|B3|B4|B5
+   * Orientation: Portrait|Landscape
+
 20120601
  * Main buttons are firmed:
    * Init fields: All position of fields are set initial value.
    * Load fields: Load position infomation from fd.json.
    * Output: Read position of fields from page in json to console.
    * Preview: Present the result of combining field content(hard-coded hash variable) and definition .
+
 20120531
  * Field Resizable
  * Field ControlButton:  [Configure], [Add subfield + ], [Del sub-field - ]
