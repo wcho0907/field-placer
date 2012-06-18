@@ -58,7 +58,7 @@
 			    width:785px;
 			    margin:0 0 0 0;  
 			    position:relative;  
-			    background-image: url('images/LLDLN085.gif');
+			    background-image: url('images/LLDLN085.jpg');
                 background-repeat: no-repeat;
 			}  
 
@@ -193,10 +193,10 @@
 				</table>
 				<div class="" id="status"></div>			
 			</td>
-			<td>				
+			<td>
 				<div id="pageFrame"></div>
 	            <div class="formImage"></div>    
-	        	<div id="formArea"></div>        		
+	        	<div id="formArea"></div>
 			</td>
 		  </tr>
 		</table> 
@@ -595,6 +595,11 @@
 						}						
 				};
 
+				var createListObj = function(){
+					var listObject ={fid: "1", fgid: "0", fx: "100", fy: "200", fwidth: "160", flalign: "right", ftext:"哈哈"};
+					return listObject;
+				};
+
                 $("button").button();
 
 				// 處理[初始定位]
@@ -700,7 +705,15 @@
 					data['f_8'] = '002356473567';
 					data['f_9'] = 23000;
 
+					var labels  = {}; // labelObj JSON.stringify(labels)
 					for(var key in data){
+						// if(labels.length){
+						// 	labels[labels.length] = createListObj();
+						// }
+						// else{
+						// 	labels[0] = createListObj();	
+						// }
+						// alert(key);
 						var fitem = $('#id' + key.split('_')[1]);
 						var theAlign = fitem.data("ftalign");
 						if(theAlign == '置左'){
@@ -735,6 +748,14 @@
 							}							
 						}
 					}
+
+					//alert(JSON.stringify(labels));
+				    // var recipe =  window.open('','RecipeWindow','width=600,height=600');
+				    // var html = '<html><head><title>Print Your Recipe</title></head><body><div id="myprintrecipe">' + $('<div />').append($('#report').clone()).html() + '</div></body></html>';
+				    // recipe.document.open();
+				    // recipe.document.write(html);
+				    // recipe.document.close();
+
 				});
 
 			    $("#formArea").selectable({
