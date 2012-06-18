@@ -1,0 +1,112 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+		<link rel="stylesheet" type="text/css" media="screen" href="css/ui-lightness/jquery-ui-1.8.20.custom.css" />
+<!-- 		<link rel="stylesheet" type="text/css" media="screen" href="css/cupertino/jquery-ui-1.8.20.custom.css" /> -->
+        <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
+        <link rel="stylesheet" href="css/base.css" />	
+
+		<link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqreport.css" />
+
+
+		<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.backgroundpos.min.js"></script>		
+		<script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>
+		<script src="js/i18n/grid.locale-tw.js" type="text/javascript"></script>
+		<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>    
+        <script src="js/common/common.properties.js"></script>
+        <script src="js/common/common.jqgrid.js"></script>
+
+        <script type="text/javascript" src="js/FormRptDef.js"></script>
+    </head>
+
+    <body>
+<form id="mform" onsubmit="return false;"></form>
+
+<div id="tabs">
+	<ul>
+		<!--
+		<li><a href="#tabs-1"><spring:message code="formRptDef.basicDef"></spring:message></a></li>
+		<li><a href="#tabs-2"><spring:message code="formRptDef.fieldDef"></spring:message></a></li>
+		<li><a href="#tabs-3"><spring:message code="formRptDef.dataDef"></spring:message></a></li>
+		<li><a href="#tabs-4"><spring:message code="formRptDef.rptPreview"></spring:message></a></li>
+        -->
+	    <li><a href="#tabs-1">基本定義</a></li>
+		<li><a href="#tabs-2">欄位定義</a></li>
+		<li><a href="#tabs-3">資料定義</a></li>
+		<li><a href="#tabs-4">報表預覽</a></li>
+	</ul>
+	<div id="tabs-1">
+		<p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+		<p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>			
+	</div>
+	<div id="tabs-2">
+		<table id="mainLayout">
+		  <tr>
+		  	<td>
+			    <button id="initButton">初始定位</button>
+			    <button id="loadButton">載入定位</button>
+			    <button id="OutputButton">輸出定位</button>
+			    <button id="previewButton">報表預覽</button>
+			    <div id="list"></div>
+
+				<table id="pageSetting">
+					<tr>
+						<td>頁面邊距</td>	
+						<td>
+							距左: <input id="fvpmLeft" type="text" size="3" maxlength="3">
+							距頂: <input id="fvpmTop" type="text" size="3" maxlength="3">
+						</td>
+					</tr>
+					<tr>
+						<td>頁面大小</td>
+						<td>
+							<div id="pageSize">
+								<input type="radio" id="psA3" name="pageSize" /><label for="psA3">A3</label>
+								<input type="radio" id="psA4" name="pageSize" checked="checked" /><label for="psA4">A4</label>
+								<input type="radio" id="psA5" name="pageSize" /><label for="psA5">A5</label>
+								<input type="radio" id="psB3" name="pageSize" /><label for="psB3">B3</label>
+								<input type="radio" id="psB4" name="pageSize" /><label for="psB4">B4</label>
+								<input type="radio" id="psB5" name="pageSize" /><label for="psB5">B5</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>頁面方向</td>
+						<td>
+							<div id="pageOrientation">
+								<input type="radio" id="poPortrait" name="pageOrientation" checked="checked" /><label for="poPortrait">直式</label>
+								<input type="radio" id="poLandscape" name="pageOrientation"/><label for="poLandscape">橫式</label>
+							</div>								
+						</td>
+					</tr>
+				</table>
+				<div class="" id="status"></div>			
+			</td>
+			<td>
+                <div id="miniature"></div>
+			</td>
+		  </tr>
+		</table> 
+	</div>
+	<div id="tabs-3">
+		<p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+		<p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+	</div>
+	<div id="tabs-4">
+		<button id="printButton">列印報表</button>
+		
+		<iframe style="position: absolute; left: -10000px" id="pdf-iframe" name="pdf"></iframe>
+
+		<a href="webroot/handler/codetypehandler/getPDF" target="pdf-iframe">Print PDF!</a>
+	</div>	
+</div>
+
+<div id="field-locator" title="欄位訂位" style="display: none;"> 
+	<div id="pageFrame"></div>
+	<div id="formImage" class="formImage"></div>    
+	<div id="formArea"></div>
+</div> 
+
+    </body>
+</html>

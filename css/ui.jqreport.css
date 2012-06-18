@@ -1,0 +1,133 @@
+
+			td {
+				vertical-align:top;
+			}
+
+            #pageFrame {
+            	position:absolute;
+				border: 1px dashed #000;
+				vertical-align:top;
+				background:#D3D3D3;
+            }
+
+            /* todo: page orientation */
+		    .pageSize-P-A3 {width: 297mm;height: 420mm;}
+		    .pageSize-P-A4 {width: 210mm;height: 297mm;}
+		    .pageSize-P-A5 {width: 148mm;height: 210mm;}
+		    .pageSize-P-B3 {width: 353mm;height: 500mm;}
+		    .pageSize-P-B4 {width: 250mm;height: 353mm;}
+		    .pageSize-P-B5 {width: 176mm;height: 250mm;}
+		    .pageSize-L-A3 {width: 420mm;height: 297mm;}
+		    .pageSize-L-A4 {width: 297mm;height: 210mm;}
+		    .pageSize-L-A5 {width: 210mm;height: 148mm;}
+		    .pageSize-L-B3 {width: 500mm;height: 353mm;}
+		    .pageSize-L-B4 {width: 353mm;height: 250mm;}
+		    .pageSize-L-B5 {width: 250mm;height: 176mm;}
+
+		    .ui-jqgrid {font-size:1em}
+
+            /* 表格標題列高 */
+		    .ui-jqgrid .ui-jqgrid-htable th div {
+			    height:auto;
+			    overflow:hidden;
+			    padding-right:4px;
+			    padding-top:2px;
+			    position:relative;
+			    vertical-align:text-top;
+			    white-space:normal !important;
+			}
+
+            #formImage {
+
+            }
+
+			#formArea {  
+			    background:#333;  
+			    border: 1px solid #000;  
+			    height:554px;
+			    width:785px;
+			    margin:0 0 0 0;  
+			    position:relative;  
+			    background-image: url('../formpic/LLDLN085.png');
+                background-repeat: no-repeat;
+			}  
+
+			#formArea > div.ui-selecting {
+			    background: #68BADA !important;
+			    border:3px solid #000000 !important;
+			    color: #000000 !important;
+			}
+			#formArea > div.ui-selected {
+			    background: #68BADA !important;
+			    border:3px solid #000000 !important;
+                color: #000000 !important;
+			}
+			#formArea div.fvField,div.fvSubField {
+			    position: absolute;
+			    height: 19px;
+			    border: 3px solid #68BADA;
+			    cursor:move;
+			}
+			#formArea div.showContent {
+			    position: absolute;
+			    height: 19px;
+			    border: 3px solid #FFFFFF;
+			    background-color: #FFFFFF;
+			    color: #000000;
+			    cursor:pointer;
+			    filter:alpha(opacity=100);
+                opacity: 1;
+                -moz-opacity: 1;		
+			}
+
+			.fv-opacity{
+		        filter:alpha(opacity=80);
+                opacity: .8;
+                -moz-opacity: .8;				
+			}
+			#formArea div p{
+				cursor:move;
+			}
+			#formArea .ui-draggable{
+			    /* color reference: http://craigsworks.com/projects/qtip/ 	*/
+			    /*background-color: #F79992; /* red */
+			    /*border: 3px solid #CE6F6F; /* red */
+                /*color: #9C2F2F;            /* red */
+
+			    /*background-color: #A2D959; /* green */
+			    /*border: 3px solid #8FD401; /* green */
+                /*color: #58792E;            /* green */
+
+                background-color: #90D8F0; /* blue */
+			    border: 3px solid #68BADA; /* blue */
+                color: #155F8F;            /* blue */
+
+			}
+			#formArea .ui-draggable-dragging{
+			    /* background-color:#91B168; */
+			    background-color: #68BADa;
+			    border: 3px dashed #000000;
+			    color: #ffffff;            
+			}
+
+			span.ui-icon-circle-triangle-e, .ui-icon-circle-triangle-s, .ui-icon-plusthick, .ui-icon-minusthick{
+                cursor: pointer;
+			}
+
+			div.configuring{
+				float:left;
+				margin-left: 0 px;
+				margin-top: 3 px;
+				padding: 10px 10px 10px 10px;
+				color: #FFFFFF !important;
+                background-color: #000000;
+                height: 90px !important;
+                width: 150px !important ;
+                font-size: 0.8em;
+			}
+
+            .ui-button{
+            	font-size: 0.8em;
+            	width: 90px;
+            	height: 30px;
+            }
